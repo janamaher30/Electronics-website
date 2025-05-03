@@ -1,0 +1,122 @@
+:root{
+  --background-image: url("background2.jpg");
+  --slider-bg-color: #2f4156;
+  --slider-circle-color: black;
+  --text-color: black;
+  --box-bg-color:  #567C8D;
+  --box-bg-hover-color:  #98becf;
+  --background-color:#021023;
+}
+
+[data-theme="light"]{
+  --background-image: url("background\ light.png");
+  --slider-bg-color: #c9b8ae;
+  --slider-circle-color: #ffffff;
+  --text-color: black;
+  --box-bg-color: #f5efeb;
+  --box-bg-hover-color:  #c9b8ae;
+  --background-color:#f1f1f1;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+  background-image: var(--background-image);
+  background-size: cover;
+  transition: background-image 0.3s;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 30px;
+  background-color: var(--background-color);
+  font-family: sans-serif;
+}
+.logo img {
+  height: 40px;
+  width: auto;
+  margin-left: -30px;
+}
+
+nav {
+  display: flex;
+  gap: 30px;
+}
+
+nav a {
+  color: #736f7e;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  margin: auto;
+}
+
+nav a:hover {
+  color: #e4da2b;
+}
+
+.mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+}
+
+.mode-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: linear-gradient(45deg, #021023, #0c1b61);
+  border: none;
+  color: #fff;
+  font-weight: bold;
+}
+
+.container_form{
+  background: rgba(255,255,255,0.15);
+  border-radius: 20px;
+  /* backdrop-filter: blur(10px); */
+  box-shadow: 0px 6px 6px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 100px auto;
+  
+  padding: 30px; width: 300px;
+  text-align: center;
+}
+
+.input , .submit_btn{
+  background: var(--box-bg-color) ; 
+  border-radius: 20px;
+  box-shadow: 0px 6px 6px rgba(0,0,0,0.5);
+  padding: 5px;
+}
+.submit_btn:hover{
+  background-color: var(--box-bg-hover-color);
+}
+
+.input_box{
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+::placeholder{
+  color: black;
+}
+
+.link{
+  color: black;
+  font-size: 14px;
+}
+
+.link:hover{
+  color:rgb(104, 32, 192)
+}
+
+
