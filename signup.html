@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Create new account page</title>
+  <link href="login.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <img src="cattt.png" alt="Catrionics Logo" />
+    </div>
+    <nav>
+      <a href="index.html" class="navlink">Home</a>
+      <a href="store.html" class="navlink">Products</a>
+      <a href="login.html" id="navLinkLogin">Login</a>
+      <a href="signup.html" id="navLinkSignup">Registration</a>
+      <a href="cart.html" class="navlink">Cart</a>
+    </nav>
+    <button id="mode-toggle" class="mode-btn">Light Mode</button>
+  </header>
+
+
+  <form class="container_form" id="signupForm" method="post">
+    <h1 class="signup-title">Sign up</h1>
+
+    <section class="input_box">
+      <i class='fas fa-user-alt'></i> 
+      <input class="input" type="text" name="First name" placeholder="First name" required> 
+    </section>
+
+    <section class="input_box"> 
+      <i class='fas fa-user-alt'></i>
+      <input class="input" type="text" name="Last name" placeholder="Last name" required> 
+    </section>
+
+    <section class="input_box">
+      <i class='fas fa-at'></i>
+      <input class="input" type="text" name="email" placeholder="Email" required> 
+    </section>
+
+    <section class="input_box">
+      <i class="fa fa-lock"></i>
+      <input class="input" type="password" name="password" placeholder="Password" required> 
+    </section>
+
+    <button id="signupBtn" class="submit_btn" type="submit">Sign up</button>
+
+    <h5 class="login_register_text">
+      Already have an account? 
+      <a href="login.html" class="link"> Login </a>
+    </h5>
+
+  </form>
+
+  <script src="login.js"></script>
+</body>
+
+</html>
