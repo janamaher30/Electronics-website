@@ -1,118 +1,111 @@
 document.addEventListener('DOMContentLoaded', function() {
-  function getUserCart() {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user && user.loggedIn) {
-          return JSON.parse(localStorage.getItem(`cart_${user.username}`)) || [];
-      }
-      return [];
-  }
+    // Helper functions for cart management
+    function getUserCart() {
+        var user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.loggedIn) {
+            return JSON.parse(localStorage.getItem('cart_' + user.username)) || [];
+        }
+        return [];
+    }
 
-  function saveUserCart(cart) {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user && user.loggedIn) {
-          localStorage.setItem(`cart_${user.username}`, JSON.stringify(cart));
-      } else {
-          alert('Please login to save your cart items');
-          window.location.href = 'login.html';
-      }
-  }
+    function saveUserCart(cart) {
+        var user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.loggedIn) {
+            localStorage.setItem('cart_' + user.username, JSON.stringify(cart));
+        } else {
+            alert('Please login to save your cart items');
+            window.location.href = 'login.html';
+        }
+    }
 
-  document.querySelectorAll('.product').forEach(product => {
-      const minusBtn = product.querySelector('.minus');
-      const plusBtn = product.querySelector('.plus');
-      const quantitySpan = product.querySelector('.quantity');
-      const addToCartBtn = product.querySelector('.add-to-cart');
-      const messageDiv = product.querySelector('.message');
-      const colorSelect = product.querySelector('.led-color');
-      const productName = product.querySelector('h2').textContent;
-      const productPrice = product.querySelector('p').textContent;
+    function updateCartCount() {
+        var cartCount = document.querySelector('.cart-count');
+        if (cartCount) {
+            var cart = getUserCart();
+            var totalItems = cart.reduce(function(sum, item) {
+                return sum + item.quantity;
+            }, 0);
+            cartCount.textContent = totalItems > 0 ? totalItems : '';
+        }
+    }
 
-      let quantity = parseInt(quantitySpan.textContent) || 1;
-      let selectedColor = '';
+    // Product quantity and cart management
+    document.querySelectorAll('.product').forEach(function(product) {
+        var minusBtn = product.querySelector('.minus');
+        var plusBtn = product.querySelector('.plus');
+        var quantitySpan = product.querySelector('.quantity');
+        var addToCartBtn = product.querySelector('.add-to-cart');
+        var messageDiv = product.querySelector('.message');
+        var colorSelect = product.querySelector('.led-color');
+        var productName = product.querySelector('h2').textContent;
+        var productPrice = product.querySelector('p').textContent;
 
-      if (colorSelect) {
-          selectedColor = colorSelect.value;
-          colorSelect.addEventListener('change', (e) => {
-              selectedColor = e.target.value;
-          });
-      }
+        var quantity = parseInt(quantitySpan.textContent) || 1;
+        var selectedColor = '';
 
-      plusBtn.addEventListener('click', () => {
-          quantity++;
-          quantitySpan.textContent = quantity;
-      });
+        // Color selection handling
+        if (colorSelect) {
+            selectedColor = colorSelect.value;
+            colorSelect.addEventListener('change', function(e) {
+                selectedColor = e.target.value;
+            });
+        }
 
-      minusBtn.addEventListener('click', () => {
-          if (quantity > 1) {
-              quantity--;
-              quantitySpan.textContent = quantity;
-          }
-      });
+        // Quantity controls
+        plusBtn.addEventListener('click', function() {
+            quantity++;
+            quantitySpan.textContent = quantity;
+        });
 
-      addToCartBtn.addEventListener('click', () => {
-          const user = JSON.parse(localStorage.getItem('user'));
-          if (!user || !user.loggedIn) {
-              alert('Please login first to add items to cart');
-              window.location.href = 'login.html';
-              return;
-          }
+        minusBtn.addEventListener('click', function() {
+            if (quantity > 1) {
+                quantity--;
+                quantitySpan.textContent = quantity;
+            }
+        });
 
-          const cart = getUserCart();
-          const priceValue = parseFloat(productPrice.replace(/[^\d.]/g, ''));
+        // Add to cart functionality
+        addToCartBtn.addEventListener('click', function() {
+            var user = JSON.parse(localStorage.getItem('user'));
+            if (!user || !user.loggedIn) {
+                alert('Please login first to add items to cart');
+                window.location.href = 'login.html';
+                return;
+            }
 
-          const productData = {
-              id: `${productName}-${Date.now()}`, // إضافة معرف فريد
-              name: selectedColor ? `${productName} - ${selectedColor}` : productName,
-              price: priceValue,
-              quantity: quantity,
-              priceText: productPrice,
-              color: selectedColor || null,
-              addedAt: new Date().toISOString()
-          };
+            var cart = getUserCart();
+            var priceValue = parseFloat(productPrice.replace(/[^\d.]/g, ''));
 
-          const existingIndex = cart.findIndex(item => 
-              item.name === productData.name && 
-              (!item.color || item.color === productData.color)
-          );
+            var productData = {
+                // id: productName + '-' + Date.now(),
+                name: selectedColor ? productName + ' - ' + selectedColor : productName,
+                price: priceValue,
+                quantity: quantity,
+                priceText: productPrice,
+                color: selectedColor || null,
+                // addedAt: new Date().toISOString()
+            };
 
-          if (existingIndex > -1) {
-              cart[existingIndex].quantity += quantity;
-          } else {
-              cart.push(productData);
-          }
+            var existingIndex = cart.findIndex(function(item) {
+                return item.name === productData.name && 
+                      (!item.color || item.color === productData.color);
+            });
 
-          saveUserCart(cart);
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += quantity;
+            } else {
+                cart.push(productData);
+            }
 
-          messageDiv.textContent = `Added ${quantity} ${productData.name} to cart.`;
-          messageDiv.style.display = 'block';
+            saveUserCart(cart);
+            updateCartCount();
 
-          setTimeout(() => {
-              messageDiv.style.display = 'none';
-          }, 3000);
-      });
-  });
+            messageDiv.textContent = 'Added ' + quantity + ' ' + productData.name + ' to cart.';
+            messageDiv.style.display = 'block';
+        });
+    });
 
-  const cartIcon = document.querySelector('.cart-icon');
-  window.addEventListener('scroll', () => {
-      const scrollBottom = window.scrollY + window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-
-      if (scrollBottom >= documentHeight - 100) {
-          cartIcon.classList.add('show');
-      } else {
-          cartIcon.classList.remove('show');
-      }
-  });
-
-  function updateCartCount() {
-      const cartCount = document.querySelector('.cart-count');
-      if (cartCount) {
-          const cart = getUserCart();
-          const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-          cartCount.textContent = totalItems > 0 ? totalItems : '';
-      }
-  }
-
-  updateCartCount();
-  window.addEventListener('storage', updateCartCount);
+    // Initial setup
+    updateCartCount();
+    window.addEventListener('storage', updateCartCount);
 });

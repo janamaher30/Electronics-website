@@ -93,3 +93,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     updateCartCount();
 });
+document.querySelectorAll('.carousel').forEach(carousel => {
+    const images = carousel.querySelectorAll('img');
+    let index = 0;
+    const delay = parseInt(carousel.dataset.delay) || 3000;
+    setInterval(() => {
+      images[index].classList.remove('active');
+      index = (index + 1) % images.length;
+      images[index].classList.add('active');
+    }, delay);
+  });

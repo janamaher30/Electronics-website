@@ -154,41 +154,6 @@
   <a href="cart.html" class="cart-icon" title="View Cart">🛒</a>
   <script src="login.js"></script>
   <script src="section1.js"></script>
-  <script>
-    document.querySelectorAll('.carousel').forEach(carousel => {
-      const images = carousel.querySelectorAll('img');
-      let index = 0;
-      const delay = parseInt(carousel.dataset.delay) || 3000;
-      setInterval(() => {
-        images[index].classList.remove('active');
-        index = (index + 1) % images.length;
-        images[index].classList.add('active');
-      }, delay);
-    });
-    const toggleBtn = document.getElementById('mode-toggle');
-    function updateButtonText() {
-      if (document.body.classList.contains('light-mode')) {
-        toggleBtn.textContent = 'Dark Mode';
-      } else {
-        toggleBtn.textContent = 'Light Mode';
-      }
-    }
-    toggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('light-mode');
-      updateButtonText();
-      if (document.body.classList.contains('light-mode')) {
-        localStorage.setItem('mode', 'light');
-      } else {
-        localStorage.setItem('mode', 'dark');
-      }
-    });
-    window.addEventListener('load', () => {
-      const savedMode = localStorage.getItem('mode');
-      if (savedMode === 'light') {
-        document.body.classList.add('light-mode');
-      }
-      updateButtonText();
-    });
-  </script>
+  
 </body>
 </html>
